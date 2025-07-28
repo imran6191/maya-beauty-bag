@@ -88,7 +88,7 @@ function_router = {
 # Core function to call OpenAI with tools
 def chat_with_maya(messages):
     response = client.chat.completions.create(
-        model="gpt-4o",  # or gpt-4-turbo
+        model="gpt-4.1-nano",
         messages=messages,
         tools=[  # ← was `functions` before
             {
