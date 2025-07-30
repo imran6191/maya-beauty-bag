@@ -2,9 +2,16 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from backend.auth import register_user, authenticate_user
 from backend.orders import save_user_order, get_user_history
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 class RegisterData(BaseModel):
     username: str
     password: str
