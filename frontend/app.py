@@ -137,7 +137,7 @@ components.html("""
 
               // Step 1: Transcribe audio using Deepgram
               try {
-                const response = await fetch('http://localhost:8000/transcribe', {
+                const response = await fetch('https://maya-beauty-bag-1.onrender.com/transcribe', {
                   method: 'POST',
                   body: formData
                 });
@@ -160,7 +160,7 @@ components.html("""
                   return;
                 }
 
-                const saveRes = await fetch('http://localhost:8000/process_voice_input', {
+                const saveRes = await fetch('https://maya-beauty-bag-1.onrender.com/process_voice_input', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ username, transcript })
