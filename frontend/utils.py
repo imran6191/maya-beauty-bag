@@ -1,22 +1,26 @@
 import json
 import os
 from dotenv import load_dotenv
-from constants import SYSTEM_PROMPT  # ✅ CORRECT
+from constants import SYSTEM_PROMPT
 from openai import OpenAI
 import requests
+from datetime import datetime
 
 load_dotenv()
+
+API_BASE_URL = os.getenv("API_BASE_URL")
+DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Load product data from JSON
 def get_product_data():
-    base_dir = os.path.dirname(os.path.abspath(__file__))  # directory of utils.py
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(base_dir, "../backend/data/products.json")
     with open(data_path) as f:
         return json.load(f)
 
-# Function tools
+# Function specs for OpenAI
 def get_function_specs():
     return [
         {
@@ -59,7 +63,7 @@ def get_function_specs():
         }
     ]
 
-# Functions LLM can call
+# Actual functions OpenAI can call
 def get_bag_options():
     return get_product_data()["bags"]
 
@@ -72,8 +76,6 @@ def create_checkout_summary(bag_name, products, affirmation):
         "affirmation": affirmation
     }
 
-from datetime import datetime
-
 def save_order_to_backend(username, bag, products, affirmation):
     order = {
         "date": datetime.now().strftime("%Y-%m-%d"),
@@ -81,36 +83,53 @@ def save_order_to_backend(username, bag, products, affirmation):
         "products": products,
         "affirmation": affirmation
     }
-
-    print("🚀 Saving order to backend:", username, order)
-    res = requests.post("https://maya-beauty-bag-1.onrender.com/save_order", json={
+    res = requests.post(f"{API_BASE_URL}/save_order", json={
         "user_id": username,
         "order_data": order
     })
-
     if res.status_code != 200:
         print("❌ Failed to save order:", res.status_code, res.text)
-
     return res.status_code == 200
 
+# Generate TTS audio from Deepgram
 
-# Router for function calls
-function_router = {
-    "get_bag_options": lambda _: get_bag_options(),  # <-- no argument passed
-    "get_products_by_category": lambda args: get_products_by_category(args.get("category")),
-    "create_checkout_summary": lambda args: create_checkout_summary(
-        args["bag_name"], args["products"], args["affirmation"]
-    )
-}
-# Core function to call OpenAI with tools
+def speak_response(text):
+    url = "https://api.deepgram.com/v1/speak?model=aura-asteria-en"
+    headers = {
+        "Authorization": f"Token {DEEPGRAM_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    payload = {"text": text}
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code == 200:
+        return response.content
+    else:
+        print("❌ Deepgram TTS failed:", response.text)
+        return None
+
+# Main AI function
 def chat_with_maya(messages, username=None):
-    response = client.chat.completions.create(
-        model="gpt-4.1-nano",
-        messages=messages,
-        temperature=0.8,
-        functions=get_function_specs(),
-        function_call="auto"
-    )
+    print("\n=== Sending to OpenAI ===")
+    print(f"Messages: {messages}")
+
+    is_first_response = len([m for m in messages if m["role"] == "assistant"]) == 0
+
+    if is_first_response:
+        function_call = {"name": "get_bag_options"}
+    else:
+        function_call = "auto"
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4.1-nano",  # ✅ Correct model
+            messages=messages,
+            temperature=0.8,
+            functions=get_function_specs(),
+            function_call=function_call
+        )
+    except Exception as e:
+        print("❌ OpenAI Error:", e)
+        return "I'm having trouble connecting. Please try again."
 
     message = response.choices[0].message
 
@@ -130,27 +149,37 @@ def chat_with_maya(messages, username=None):
             selected_products = args.get("products")
             affirmation = args.get("affirmation")
 
-            # Only proceed if all required args are present
             if bag and selected_products and affirmation:
                 result = create_checkout_summary(bag, selected_products, affirmation)
-
-                # Save to backend
                 if username:
                     save_order_to_backend(username, bag, selected_products, affirmation)
             else:
-                result = {"error": "Missing bag_name, products, or affirmation."}
+                result = {"error": "Missing required fields."}
 
         else:
             result = {"error": "Unknown function."}
 
-        # Append function result
         messages.append({
             "role": "function",
             "name": func_name,
             "content": json.dumps(result)
         })
 
-        # Recurse to continue the conversation
+        # 🟢 Recursive call to continue conversation
         return chat_with_maya(messages, username=username)
 
-    return message.content.strip()
+    elif message.content:
+        text_response = message.content.strip()
+
+        # 🟢 TTS with Deepgram
+        audio_data = speak_response(text_response)
+        if audio_data:
+            # Write to file
+            with open("maya_response.mp3", "wb") as f:
+                f.write(audio_data)
+            print("✅ Audio saved to maya_response.mp3")
+
+        return text_response
+
+    else:
+        return "⚠️ No response from Maya." 

@@ -15,3 +15,20 @@ Maya is a fully functional, personalized beauty assistant built with FastAPI, St
 - 🧠 OpenAI assistant using function-calling for structured flow
 
 ---
+
+### Project Structure
+
+maya_beauty_bag/
+├── backend/
+│ ├── main.py # FastAPI app (auth, order, voice transcription routes)
+│ ├── auth.py # User registration and login logic
+│ ├── orders.py # Order saving and retrieval
+│ ├── products.json # Beauty bags and products data
+│
+├── frontend/
+│ ├── app.py # Streamlit app with text + voice chat interface
+│ ├── constants.py # System prompt for OpenAI assistant
+│ ├── utils.py # Product lookup, order saving, OpenAI chat logic
+│
+├── requirements.txt 
+└── README.md
