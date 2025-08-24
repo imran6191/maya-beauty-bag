@@ -1,1 +1,61 @@
-{"user_id": "maya_user_ali", "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5", "orders": []} 
+{
+  "user_id": "maya_user_ali",
+  "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+  "orders": [],
+  "conversation": [
+    {
+      "role": "user",
+      "content": "we want to create a boot bell"
+    },
+    {
+      "role": "function",
+      "name": "get_bag_options",
+      "content": "[{\"name\": \"The Bold Bag\", \"description\": \"Power move. This one's for women who walk into rooms like they own them.\"}, {\"name\": \"The Glow Ritual\", \"description\": \"Healing. Glowing. You're claiming softness without apology.\"}, {\"name\": \"The Soft Reset\", \"description\": \"Peace, clarity, space. Stillness is power too.\"}, {\"name\": \"The Power Pouch\", \"description\": \"Focused. Fierce. Energy is loud even when you're quiet.\"}]"
+    },
+    {
+      "role": "user",
+      "content": "i want bold bag"
+    },
+    {
+      "role": "function",
+      "name": "get_bag_options",
+      "content": "[{\"name\": \"The Bold Bag\", \"description\": \"Power move. This one's for women who walk into rooms like they own them.\"}, {\"name\": \"The Glow Ritual\", \"description\": \"Healing. Glowing. You're claiming softness without apology.\"}, {\"name\": \"The Soft Reset\", \"description\": \"Peace, clarity, space. Stillness is power too.\"}, {\"name\": \"The Power Pouch\", \"description\": \"Focused. Fierce. Energy is loud even when you're quiet.\"}]"
+    },
+    {
+      "role": "user",
+      "content": "a one foundation"
+    },
+    {
+      "role": "function",
+      "name": "get_bag_options",
+      "content": "[{\"name\": \"The Bold Bag\", \"description\": \"Power move. This one's for women who walk into rooms like they own them.\"}, {\"name\": \"The Glow Ritual\", \"description\": \"Healing. Glowing. You're claiming softness without apology.\"}, {\"name\": \"The Soft Reset\", \"description\": \"Peace, clarity, space. Stillness is power too.\"}, {\"name\": \"The Power Pouch\", \"description\": \"Focused. Fierce. Energy is loud even when you're quiet.\"}]"
+    },
+    {
+      "role": "user",
+      "content": "radiant"
+    },
+    {
+      "role": "function",
+      "name": "get_bag_options",
+      "content": "[{\"name\": \"The Bold Bag\", \"description\": \"Power move. This one's for women who walk into rooms like they own them.\"}, {\"name\": \"The Glow Ritual\", \"description\": \"Healing. Glowing. You're claiming softness without apology.\"}, {\"name\": \"The Soft Reset\", \"description\": \"Peace, clarity, space. Stillness is power too.\"}, {\"name\": \"The Power Pouch\", \"description\": \"Focused. Fierce. Energy is loud even when you're quiet.\"}]"
+    },
+    {
+      "role": "user",
+      "content": "i want eyeliner"
+    },
+    {
+      "role": "function",
+      "name": "get_bag_options",
+      "content": "[{\"name\": \"The Bold Bag\", \"description\": \"Power move. This one's for women who walk into rooms like they own them.\"}, {\"name\": \"The Glow Ritual\", \"description\": \"Healing. Glowing. You're claiming softness without apology.\"}, {\"name\": \"The Soft Reset\", \"description\": \"Peace, clarity, space. Stillness is power too.\"}, {\"name\": \"The Power Pouch\", \"description\": \"Focused. Fierce. Energy is loud even when you're quiet.\"}]"
+    },
+    {
+      "role": "user",
+      "content": "i want a mascara"
+    },
+    {
+      "role": "function",
+      "name": "get_bag_options",
+      "content": "[{\"name\": \"The Bold Bag\", \"description\": \"Power move. This one's for women who walk into rooms like they own them.\"}, {\"name\": \"The Glow Ritual\", \"description\": \"Healing. Glowing. You're claiming softness without apology.\"}, {\"name\": \"The Soft Reset\", \"description\": \"Peace, clarity, space. Stillness is power too.\"}, {\"name\": \"The Power Pouch\", \"description\": \"Focused. Fierce. Energy is loud even when you're quiet.\"}]"
+    }
+  ]
+}

@@ -7,3 +7,6 @@ requests
 components
 streamlit-javascript
 python-multipart
+pydantic
+streamlit
+pydantic-settings

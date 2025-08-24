@@ -1,7 +1,7 @@
 import json
 import os
 from dotenv import load_dotenv
-from constants import SYSTEM_PROMPT
+from prompts import SYSTEM_PROMPT
 from openai import OpenAI
 import requests
 from datetime import datetime
@@ -10,7 +10,6 @@ load_dotenv()
 
 API_BASE_URL = os.getenv("API_BASE_URL")
 DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
-
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Load product data from JSON
@@ -92,7 +91,6 @@ def save_order_to_backend(username, bag, products, affirmation):
     return res.status_code == 200
 
 # Generate TTS audio from Deepgram
-
 def speak_response(text):
     url = "https://api.deepgram.com/v1/speak?model=aura-asteria-en"
     headers = {
@@ -109,8 +107,7 @@ def speak_response(text):
 
 # Main AI function
 def chat_with_maya(messages, username=None):
-    print("\n=== Sending to OpenAI ===")
-    print(f"Messages: {messages}")
+    print("frontend")
 
     is_first_response = len([m for m in messages if m["role"] == "assistant"]) == 0
 
@@ -121,7 +118,7 @@ def chat_with_maya(messages, username=None):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-nano",  # ✅ Correct model
+            model="gpt-4.1-nano",
             messages=messages,
             temperature=0.8,
             functions=get_function_specs(),

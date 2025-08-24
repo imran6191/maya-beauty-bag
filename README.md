@@ -19,16 +19,45 @@ Maya is a fully functional, personalized beauty assistant built with FastAPI, St
 ### Project Structure
 
 maya_beauty_bag/
+│
 ├── backend/
-│ ├── main.py # FastAPI app (auth, order, voice transcription routes)
-│ ├── auth.py # User registration and login logic
-│ ├── orders.py # Order saving and retrieval
-│ ├── products.json # Beauty bags and products data
+│ ├── init.py
+│ ├── main.py # FastAPI app & WebSocket routes
+│ ├── api/
+│ │ ├── auth.py # /register, /login
+│ │ ├── voice.py # /transcribe, /ws
+│ │ └── orders.py # /save_order, /user_orders
+│ │
+│ ├── core/
+│ │ ├── config.py # Environment settings
+│ │ ├── security.py # Password hashing
+│ │ └── websocket_manager.py # WebSocket manager
+│ │
+│ ├── ai/
+│ │ ├── agent.py # chat_with_maya logic
+│ │ ├── functions.py # get_bag_options, etc.
+│ │ ├── prompts.py # SYSTEM_PROMPT
+│ │ └── tts.py # Deepgram TTS
+│ │
+│ ├── models/
+│ │ └── schemas.py # Pydantic models
+│ │
+│ ├── data/
+│ │ ├── users/ # JSON files per user
+│ │ └── products.json # Bag & product catalog
+│ │
+│ └── utils/
+│ └── file_store.py # Read/write user data
 │
 ├── frontend/
-│ ├── app.py # Streamlit app with text + voice chat interface
-│ ├── constants.py # System prompt for OpenAI assistant
-│ ├── utils.py # Product lookup, order saving, OpenAI chat logic
+│ ├── app.py # Streamlit UI
+│ ├── components/
+│ │ ├── voice_widget.html # Embedded voice recorder
+│ │
+│ └── utils/
+│ └── api_client.py # Backend API calls
 │
-├── requirements.txt 
-└── README.md
+├── .env # Environment variables
+├── requirements.txt # Dependencies
+├── README.md
+└── docker-compose.yml (optional)
